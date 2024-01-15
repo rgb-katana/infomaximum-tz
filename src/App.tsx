@@ -1,7 +1,7 @@
 import { Global } from '@emotion/react';
 import { FC } from 'react';
 import Cars from './pages/Cars/Cars';
-import { GLOBAL_STYLES } from './styles/global.styles';
+import GlobalStyles from './styles/global.styles';
 
 import {
   ApolloClient,
@@ -12,6 +12,7 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AppLayout from './ui/AppLayout';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -34,12 +35,12 @@ const client = new ApolloClient({
 const App: FC = () => {
   return (
     <div>
-      <Global styles={GLOBAL_STYLES} />
+      <GlobalStyles />
       <ApolloProvider client={client}>
         <BrowserRouter>
           <Routes>
-            <Route>
-              <Cars />
+            <Route element={<AppLayout />}>
+              <Route index element={<Cars />} />
             </Route>
           </Routes>
         </BrowserRouter>
