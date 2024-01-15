@@ -5,6 +5,18 @@ import Heart from '../assets/heart.svg?react';
 
 const StyledHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-2);
+  margin-bottom: 35px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  max-width: 1920px;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin: 0 auto;
 `;
 
 const LeftSide = styled.div`
@@ -54,17 +66,6 @@ const StyledAdress = styled.p`
 const StyledNumber = styled.p`
   margin-right: 100px;
   font-weight: 500;
-`;
-
-const Container = styled.div`
-  display: flex;
-  max-width: 1920px;
-  height: 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  margin: 0 auto;
 `;
 
 function Header() {
