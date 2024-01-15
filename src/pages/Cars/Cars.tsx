@@ -26,7 +26,7 @@ const StyledInstruments = styled.div`
   margin-bottom: 35px;
 `;
 
-const Cars: FC = () => {
+const Cars: React.FunctionComponent = () => {
   const [cars, setCars] = useState<Query['cars']>([]);
 
   const [search, setSearch] = useState('');
@@ -43,19 +43,6 @@ const Cars: FC = () => {
       setCars(data.cars);
     }
   }, [data]);
-
-  useEffect(() => {
-    console.log('Search:', search);
-
-    const searched = cars.filter(car => {
-      return car.model.toLowerCase().includes(search.toLowerCase());
-    });
-    setCars(searched);
-
-    if (data) {
-      setCars(searched || data.cars);
-    }
-  }, [search]);
 
   return (
     <Container>

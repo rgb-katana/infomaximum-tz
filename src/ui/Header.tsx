@@ -50,6 +50,7 @@ const StyledFavourite = styled.div`
   width: 126px;
   height: 24px;
   display: flex;
+  align-items: center;
   gap: 12px;
 `;
 
@@ -68,6 +69,18 @@ const StyledNumber = styled.p`
   font-weight: 500;
 `;
 
+const HeartButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:active {
+    filter: grayscale(30%);
+  }
+
+  background-color: transparent;
+`;
+
 function Header() {
   return (
     <StyledHeader>
@@ -83,7 +96,9 @@ function Header() {
           <StyledAdress>Москва, Волгоградский пр-кт, 43, стр 1</StyledAdress>
           <StyledNumber>+7 800 555 35 35</StyledNumber>
           <StyledFavourite>
-            <Heart />
+            <HeartButton onClick={e => e.preventDefault()}>
+              <Heart />
+            </HeartButton>
             <span style={{ fontWeight: '500' }}>Избранное</span>
           </StyledFavourite>
         </RightSide>
