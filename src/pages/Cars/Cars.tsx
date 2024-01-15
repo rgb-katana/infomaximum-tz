@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import carsJSON from '../../fake_cars.json';
 import { Query } from '../../graphql/generated';
-import { loadCars } from '../../graphql/queries';
+import { LOAD_CARS } from '../../graphql/queries';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import CarItem from './CarItem';
@@ -28,27 +27,34 @@ const StyledInstruments = styled.div`
 `;
 
 const Cars: FC = () => {
-  // const cars: Query["cars"] = carsJSON;
-  const { error, loading, data } = useQuery(loadCars(''));
   const [cars, setCars] = useState<Query['cars']>([]);
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('');
 
+  const { error, loading, data } = useQuery(LOAD_CARS, {
+    variables: { search: search ? search.toLowerCase() : '' },
+  });
+
   useEffect(() => {
+    console.log('Data:', data);
+
     if (data) {
       setCars(data.cars);
     }
   }, [data]);
 
   useEffect(() => {
-    console.log(search);
+    console.log('Search:', search);
+
     const searched = cars.filter(car => {
       return car.model.toLowerCase().includes(search.toLowerCase());
     });
-    console.log(cars);
-    // const { error, loading, data } = useQuery(loadCars(search));
     setCars(searched);
+
+    if (data) {
+      setCars(searched || data.cars);
+    }
   }, [search]);
 
   return (
