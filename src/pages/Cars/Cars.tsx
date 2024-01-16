@@ -10,6 +10,7 @@ import Filter from './Filter';
 const Container = styled.div`
   padding: 0 20px;
   margin: 0 auto;
+  margin-top: 35px;
   max-width: 1920px;
 `;
 

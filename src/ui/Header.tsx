@@ -1,3 +1,4 @@
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../assets/logo.svg?react';
 import Burger from '../assets/burger.svg?react';
@@ -5,7 +6,6 @@ import Heart from '../assets/heart.svg?react';
 
 const StyledHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-2);
-  margin-bottom: 35px;
 `;
 
 const Container = styled.div`
@@ -65,7 +65,7 @@ const StyledAdress = styled.p`
 `;
 
 const StyledNumber = styled.p`
-  margin-right: 100px;
+  margin-right: 150px;
   font-weight: 500;
 `;
 
@@ -73,20 +73,35 @@ const HeartButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+`;
 
-  &:active {
-    filter: grayscale(30%);
+const StyledNavLink = styled(NavLink)`
+  &:link,
+  &:visited {
+    color: var(--color-gray-4);
   }
 
-  background-color: transparent;
+  &:hover,
+  &:active,
+  &.active:link,
+  &.active:visited {
+    color: var(--color-gray-4);
+  }
 `;
 
 function Header() {
+  const navigate = useNavigate();
+  const handleNavigate = () => navigate('/favourite');
+
   return (
     <StyledHeader>
       <Container>
         <LeftSide>
-          <Logo />
+          <NavLink to="/">
+            <Logo />
+          </NavLink>
           <StyledCatalogButton>
             <Burger style={{ scale: '1.2' }} />
             <span style={{ fontWeight: '500' }}>Каталог</span>
@@ -96,10 +111,12 @@ function Header() {
           <StyledAdress>Москва, Волгоградский пр-кт, 43, стр 1</StyledAdress>
           <StyledNumber>+7 800 555 35 35</StyledNumber>
           <StyledFavourite>
-            <HeartButton onClick={e => e.preventDefault()}>
+            <HeartButton onClick={() => handleNavigate()}>
               <Heart />
             </HeartButton>
-            <span style={{ fontWeight: '500' }}>Избранное</span>
+            <StyledNavLink to="/favourite">
+              <span style={{ fontWeight: '500' }}>Избранное</span>
+            </StyledNavLink>
           </StyledFavourite>
         </RightSide>
       </Container>

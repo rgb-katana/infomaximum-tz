@@ -19,14 +19,14 @@ const StyledCarName = styled.p`
   font-weight: 500;
   font-size: 24px;
   line-height: 28px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 
 const StyledYear = styled.p`
   font-size: 14px;
   font-weight: 400;
   display: inline-block;
-  margin-right: 20px;
+  margin-right: 13px;
   color: var(--color-gray-3);
 `;
 
@@ -34,9 +34,8 @@ const StyledColor = styled.p`
   font-size: 14px;
   font-weight: 400;
   display: inline-block;
-  margin-right: 10px;
   color: var(--color-gray-3);
-  margin-bottom: 7px;
+  margin-bottom: 13px;
 `;
 
 const StyledPrice = styled.p`
@@ -104,7 +103,7 @@ interface GreyFilterProps {
 const GreyFilter = styled.div<GreyFilterProps>`
   position: relative;
 
-  ${props =>
+  ${(props) =>
     props.$grey &&
     `
     & > img {
