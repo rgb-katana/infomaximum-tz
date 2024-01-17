@@ -1,7 +1,7 @@
-import { Global } from '@emotion/react';
 import { FC } from 'react';
 import Cars from './pages/Cars/Cars';
 import GlobalStyles from './styles/global.styles';
+import { Provider } from 'react-redux';
 
 import {
   ApolloClient,
@@ -14,6 +14,7 @@ import { onError } from '@apollo/client/link/error';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './ui/AppLayout';
 import Favourite from './pages/Favourite/Favourite';
+import { store } from './store';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -35,7 +36,7 @@ const client = new ApolloClient({
 
 const App: FC = () => {
   return (
-    <div>
+    <Provider store={store}>
       <GlobalStyles />
       <ApolloProvider client={client}>
         <BrowserRouter>
@@ -47,7 +48,7 @@ const App: FC = () => {
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
-    </div>
+    </Provider>
   );
 };
 

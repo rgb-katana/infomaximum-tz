@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import CarItem from './CarItem';
 import Search from './Search';
 import Filter from './Filter';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -32,6 +33,8 @@ const Cars: React.FunctionComponent = () => {
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('');
+
+  const favourites = useAppSelector(state => state.favourites.favourites);
 
   const { error, loading, data } = useQuery(LOAD_CARS, {
     variables: { search: search ? search.toLowerCase() : '' },

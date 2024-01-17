@@ -4,6 +4,9 @@ import React, { FC } from 'react';
 import { STATIC_DOMAIN } from '../../shared/variables';
 import BleakHeart from '../../assets/bleakheart.svg?react';
 import EmptyHeart from '../../assets/emptyheart.svg?react';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useAppDispatch } from '../../hooks/reduxHooks';
+import { addCar } from '../Favourite/favouriteSlice';
 
 const StyledListItem = styled.li`
   position: relative;
@@ -103,7 +106,7 @@ interface GreyFilterProps {
 const GreyFilter = styled.div<GreyFilterProps>`
   position: relative;
 
-  ${(props) =>
+  ${props =>
     props.$grey &&
     `
     & > img {
@@ -135,6 +138,7 @@ interface CarItem {
 
 const CarItem: React.FunctionComponent<CarItem> = (props: CarItem) => {
   const { img_src, model, model_year, color, price, availability } = props.car;
+  const dispatch = useAppDispatch();
 
   return (
     <StyledListItem>
@@ -151,7 +155,12 @@ const CarItem: React.FunctionComponent<CarItem> = (props: CarItem) => {
         <StyledPrice>от {price}</StyledPrice>
         <GroupContainer>
           <StyledBuyButton>Купить</StyledBuyButton>
-          {availability && <EmptyHeart style={{ width: 27, height: 24 }} />}
+          {availability && (
+            <EmptyHeart
+              style={{ width: 27, height: 24 }}
+              onClick={() => dispatch(addCar({ ...props.car }))}
+            />
+          )}
           {!availability && <BleakHeart style={{ width: 27, height: 24 }} />}
         </GroupContainer>
       </GreyFilter>
