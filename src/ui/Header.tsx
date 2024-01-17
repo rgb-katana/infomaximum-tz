@@ -2,7 +2,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../assets/logo.svg?react';
 import Burger from '../assets/burger.svg?react';
-import Heart from '../assets/heart.svg?react';
+import Heart from '../assets/heart.svg';
+import DarkHeart from '../assets/darkheart.svg';
 
 const StyledHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-2);
@@ -75,6 +76,16 @@ const HeartButton = styled.button`
   align-items: center;
   background-color: transparent;
   cursor: pointer;
+
+  & > img {
+    width: 27px;
+    height: 24px;
+    transition: background-image 0.3s ease;
+  }
+
+  &:active > img {
+    content: url(${DarkHeart});
+  }
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -112,7 +123,7 @@ function Header() {
           <StyledNumber>+7 800 555 35 35</StyledNumber>
           <StyledFavourite>
             <HeartButton onClick={() => handleNavigate()}>
-              <Heart />
+              <img src={Heart} />
             </HeartButton>
             <StyledNavLink to="/favourite">
               <span style={{ fontWeight: '500' }}>Избранное</span>

@@ -1,12 +1,21 @@
 import styled from 'styled-components';
 import { Car } from '../../graphql/generated';
-import React, { FC } from 'react';
+import React from 'react';
 import { STATIC_DOMAIN } from '../../shared/variables';
+
 import BleakHeart from '../../assets/bleakheart.svg?react';
-import EmptyHeart from '../../assets/emptyheart.svg?react';
-import { Dispatch } from '@reduxjs/toolkit';
-import { useAppDispatch } from '../../hooks/reduxHooks';
-import { addCar } from '../Favourite/favouriteSlice';
+
+import HoveredHeart from '../../assets/heart.svg';
+import DarkHeart from '../../assets/darkheart.svg';
+import EmptyHeart from '../../assets/emptyheart.svg';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import {
+  addCar,
+  checkIsCarFavourite,
+  removeCar,
+} from '../Favourite/favouriteSlice';
+import formatPrice from '../../utils/formatPrice';
 
 const StyledListItem = styled.li`
   position: relative;
@@ -67,8 +76,6 @@ const StyledBuyButton = styled.button`
     background-color: var(--color-purple-pressed);
   }
 `;
-
-// const StyledFavouriteIcon = styl
 
 const Unavailable = styled.div`
   position: absolute;
@@ -132,13 +139,41 @@ const GreyFilter = styled.div<GreyFilterProps>`
   `}
 `;
 
+const StyledHeartButton = styled.button`
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+
+  & > img {
+    width: 27px;
+    height: 24px;
+    transition: background-image 0.3s ease;
+  }
+
+  &:hover > img {
+    content: url(${HoveredHeart});
+  }
+
+  &:active > img {
+    content: url(${DarkHeart});
+  }
+`;
+
 interface CarItem {
   car: Car;
 }
 
 const CarItem: React.FunctionComponent<CarItem> = (props: CarItem) => {
-  const { img_src, model, model_year, color, price, availability } = props.car;
+  const { img_src, model, model_year, color, price, availability, id } =
+    props.car;
+
   const dispatch = useAppDispatch();
+
+  const isFavourite = useAppSelector(checkIsCarFavourite(id));
+
+  const toggleCar = () => {
+    isFavourite ? dispatch(removeCar(id)) : dispatch(addCar({ ...props.car }));
+  };
 
   return (
     <StyledListItem>
@@ -148,18 +183,20 @@ const CarItem: React.FunctionComponent<CarItem> = (props: CarItem) => {
         </Unavailable>
       )}
       <GreyFilter $grey={!availability}>
-        <StyledCarImage src={`${STATIC_DOMAIN + img_src}`} />
+        <StyledCarImage src={`${STATIC_DOMAIN + img_src}`} alt={`${model}`} />
         <StyledCarName>{model}</StyledCarName>
         <StyledYear>Год: {model_year}</StyledYear>
         <StyledColor>Цвет: {color}</StyledColor>
-        <StyledPrice>от {price}</StyledPrice>
+        <StyledPrice>от ${formatPrice(price)}</StyledPrice>
         <GroupContainer>
           <StyledBuyButton>Купить</StyledBuyButton>
           {availability && (
-            <EmptyHeart
-              style={{ width: 27, height: 24 }}
-              onClick={() => dispatch(addCar({ ...props.car }))}
-            />
+            <StyledHeartButton onClick={toggleCar}>
+              <img
+                src={isFavourite ? DarkHeart : EmptyHeart}
+                alt="Heart Icon"
+              />
+            </StyledHeartButton>
           )}
           {!availability && <BleakHeart style={{ width: 27, height: 24 }} />}
         </GroupContainer>
