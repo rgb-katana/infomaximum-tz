@@ -42,7 +42,7 @@ const Filter: FunctionComponent<FilterProps> = ({
   return (
     <FilterContainer>
       <Sort style={{ width: '15px', height: '16px' }} />
-      <StyledSelect value={value} onChange={onSelect}>
+      <StyledSelect value={value} onChange={onSelect} name="carsFilter">
         {options.map(item => (
           <option key={item.value} value={item.value}>
             {item.title}

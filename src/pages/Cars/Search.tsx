@@ -68,6 +68,7 @@ const Search: FunctionComponent<SearchProps> = ({ setSearch }: SearchProps) => {
 
   return (
     <StyledSearchBar
+      name="searchForm"
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(setNewSearch(draftSearch));
@@ -78,6 +79,7 @@ const Search: FunctionComponent<SearchProps> = ({ setSearch }: SearchProps) => {
         placeholder="Найти авто"
         onChange={handleDraftChange}
         value={draftSearch}
+        name="search"
       />
       <StyledSearchButton>
         <Glass width={20} height={20} />
