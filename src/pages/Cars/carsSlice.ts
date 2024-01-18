@@ -1,19 +1,37 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  cars: [],
+export type FilterValue =
+  | 'availability'
+  | 'alphabetical'
+  | '-alphabetical'
+  | 'release'
+  | '-release'
+  | 'price'
+  | '-price';
+
+interface FilterState {
+  search: string;
+  filter: FilterValue;
+}
+
+const initialState: FilterState = {
+  search: '',
+  filter: 'availability',
 };
 
-// Нужен ли мне этот карс слайс?
 const carsSlice = createSlice({
   name: 'cars',
   initialState,
   reducers: {
-    addCar(state, action) {},
-    removeCar(state, action) {},
+    setNewSearch(state, action: PayloadAction<string>) {
+      state.search = action.payload;
+    },
+    setNewFilter(state, action: PayloadAction<FilterValue>) {
+      state.filter = action.payload;
+    },
   },
 });
 
 export default carsSlice.reducer;
 
-export const { addCar, removeCar } = carsSlice.actions;
+export const { setNewSearch, setNewFilter } = carsSlice.actions;

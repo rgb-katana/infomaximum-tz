@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Query } from '../../graphql/generated';
+import { Car, Query } from '../../graphql/generated';
 import { LOAD_CARS } from '../../graphql/queries';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
@@ -7,6 +7,8 @@ import CarItem from './CarItem';
 import Search from './Search';
 import Filter from './Filter';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { sortCars } from '../../utils/sortCars';
+import { setNewFilter, setNewSearch } from './carsSlice';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -25,33 +27,43 @@ const StyledCarList = styled.ul`
 const StyledInstruments = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 35px;
 `;
 
 const Cars: React.FunctionComponent = () => {
   const [cars, setCars] = useState<Query['cars']>([]);
 
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('');
+  const options = [
+    { value: 'availability', title: 'Сначала в наличии' },
+    { value: 'alphabetical', title: 'По имени (A-Z)' },
+    { value: '-alphabetical', title: 'По имени (Z-A)' },
+    { value: 'release', title: 'Сначала новее' },
+    { value: '-release', title: 'Сначала старше' },
+    { value: 'price', title: 'Сначала дешевле' },
+    { value: '-price', title: 'Сначала дороже' },
+  ];
 
-  const favourites = useAppSelector(state => state.favourites.favourites);
+  const searchFromRedux = useAppSelector(state => state.cars.search);
+  const filterFromRedux = useAppSelector(state => state.cars.filter);
+
+  const [search, setSearch] = useState(searchFromRedux);
+  const [filter, setFilter] = useState(filterFromRedux);
 
   const { error, loading, data } = useQuery(LOAD_CARS, {
     variables: { search: search ? search.toLowerCase() : '' },
   });
 
   useEffect(() => {
-    console.log('Data:', data);
-
     if (data) {
-      setCars(data.cars);
+      setCars(sortCars(data.cars, filter));
     }
-  }, [data]);
+  }, [data, filter]);
 
   return (
     <Container>
       <StyledInstruments>
-        <Filter />
+        <Filter onChange={setFilter} value={filter} options={options} />
         <Search setSearch={setSearch} />
       </StyledInstruments>
       <StyledCarList>
