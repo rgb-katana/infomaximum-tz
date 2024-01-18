@@ -7,6 +7,9 @@ import DarkHeart from '../assets/darkheart.svg';
 
 const StyledHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-2);
+  position: fixed;
+  top: 0;
+  width: 100%;
 `;
 
 const Container = styled.div`
@@ -22,7 +25,7 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 21px;
   align-items: center;
 `;
 
@@ -61,12 +64,12 @@ const RightSide = styled.div`
 `;
 
 const StyledAdress = styled.p`
-  margin-right: 25px;
+  margin-right: 31px;
   font-weight: 500;
 `;
 
 const StyledNumber = styled.p`
-  margin-right: 150px;
+  margin-right: 136px;
   font-weight: 500;
 `;
 

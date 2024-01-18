@@ -6,7 +6,7 @@ import plural from '../../utils/plural';
 const Container = styled.div`
   padding: 0 20px;
   margin: 0 auto;
-  margin-top: 35px;
+  margin-top: 116px;
   max-width: 1920px;
   margin-bottom: 50px;
 `;
