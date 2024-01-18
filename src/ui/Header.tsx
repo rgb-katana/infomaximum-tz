@@ -10,6 +10,8 @@ const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
+  background-color: var(--color-gray-0);
 `;
 
 const Container = styled.div`
