@@ -1,6 +1,7 @@
+import { FormEvent } from 'react';
 import styled from 'styled-components';
 import Glass from '../../assets/glass.svg?react';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setNewSearch } from './carsSlice';
 
@@ -55,7 +56,7 @@ interface SearchProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Search: React.FunctionComponent<SearchProps> = ({ setSearch }) => {
+const Search: FunctionComponent<SearchProps> = ({ setSearch }: SearchProps) => {
   const dispatch = useAppDispatch();
   const value = useAppSelector(state => state.cars.search);
 
@@ -67,7 +68,7 @@ const Search: React.FunctionComponent<SearchProps> = ({ setSearch }) => {
 
   return (
     <StyledSearchBar
-      onSubmit={e => {
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(setNewSearch(draftSearch));
         setSearch(draftSearch);

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import FavouriteCar from './FavouriteCar';
 import plural from '../../utils/plural';
+import { FunctionComponent } from 'react';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -33,7 +34,7 @@ const FavouriteList = styled.ul`
   flex-direction: column;
 `;
 
-const Favourite: React.FunctionComponent = () => {
+const Favourite: FunctionComponent = () => {
   const favourites = useAppSelector(state => state.favourites.favourites);
 
   const favCount: number = favourites.length;

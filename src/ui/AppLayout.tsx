@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from './Header';
+import Header from './Header/Header';
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -9,7 +9,7 @@ const StyledAppLayout = styled.div`
 `;
 
 const StyledMain = styled.main`
-  /* background-color: grey; */
+  background-color: var(--color-gray-0);
 `;
 
 function AppLayout() {

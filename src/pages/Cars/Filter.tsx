@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Sort from '../../assets/sort.svg?react';
 import styled from 'styled-components';
 import { FilterValue, setNewFilter } from './carsSlice';
@@ -27,19 +27,23 @@ const StyledSelect = styled.select`
   appearance: none;
 `;
 
-const Filter: React.FunctionComponent<FilterProps> = (props: FilterProps) => {
+const Filter: FunctionComponent<FilterProps> = ({
+  options,
+  value,
+  onChange,
+}: FilterProps) => {
   const dispatch = useAppDispatch();
 
   const onSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    props.onChange(e.target.value as FilterValue);
+    onChange(e.target.value as FilterValue);
     dispatch(setNewFilter(e.target.value as FilterValue));
   };
 
   return (
     <FilterContainer>
       <Sort style={{ width: '15px', height: '16px' }} />
-      <StyledSelect value={props.value} onChange={onSelect}>
-        {props.options.map(item => (
+      <StyledSelect value={value} onChange={onSelect}>
+        {options.map(item => (
           <option key={item.value} value={item.value}>
             {item.title}
           </option>

@@ -1,14 +1,15 @@
-import { FC, useEffect, useState } from 'react';
-import { Car, Query } from '../../graphql/generated';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Query } from '../../graphql/generated';
 import { LOAD_CARS } from '../../graphql/queries';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import CarItem from './CarItem';
 import Search from './Search';
 import Filter from './Filter';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useAppSelector } from '../../hooks/reduxHooks';
 import { sortCars } from '../../utils/sortCars';
-import { setNewFilter, setNewSearch } from './carsSlice';
+import { sortOptions } from '../../shared/sortOptions';
+import Spinner from '../../ui/Spinner/Spinner';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -31,18 +32,10 @@ const StyledInstruments = styled.div`
   margin-bottom: 35px;
 `;
 
-const Cars: React.FunctionComponent = () => {
+const Cars: FunctionComponent = () => {
   const [cars, setCars] = useState<Query['cars']>([]);
 
-  const options = [
-    { value: 'availability', title: 'Сначала в наличии' },
-    { value: 'alphabetical', title: 'По имени (A-Z)' },
-    { value: '-alphabetical', title: 'По имени (Z-A)' },
-    { value: 'release', title: 'Сначала новее' },
-    { value: '-release', title: 'Сначала старше' },
-    { value: 'price', title: 'Сначала дешевле' },
-    { value: '-price', title: 'Сначала дороже' },
-  ];
+  const options = sortOptions;
 
   const searchFromRedux = useAppSelector(state => state.cars.search);
   const filterFromRedux = useAppSelector(state => state.cars.filter);
@@ -67,8 +60,10 @@ const Cars: React.FunctionComponent = () => {
         <Search setSearch={setSearch} />
       </StyledInstruments>
       <StyledCarList>
-        {cars.length !== 0 &&
-          cars.map(car => <CarItem car={car} key={car.id}></CarItem>)}
+        {!cars.length && <Spinner />}
+        {cars.map(car => (
+          <CarItem car={car} key={car.id} />
+        ))}
       </StyledCarList>
     </Container>
   );
