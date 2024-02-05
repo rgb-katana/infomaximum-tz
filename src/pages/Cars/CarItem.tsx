@@ -7,12 +7,6 @@ import BleakHeart from '../../assets/bleakheart.svg?react';
 import DarkHeart from '../../assets/darkheart.svg';
 import EmptyHeart from '../../assets/emptyheart.svg';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import {
-  addCar,
-  checkIsCarFavourite,
-  removeCar,
-} from '../Favourite/favouriteSlice';
 import formatPrice from '../../utils/formatPrice';
 
 import {
@@ -29,19 +23,26 @@ import {
   Unavailable,
 } from './CarItem.styles';
 
-interface CarItem {
+import { favouriteStore } from '../Favourite/favouriteStore';
+import { observer } from 'mobx-react';
+
+export interface ICarItem {
   car: Car;
 }
 
-const CarItem: FunctionComponent<CarItem> = ({ car }: CarItem) => {
+const checkIsCarFavourite: (id: number) => boolean = (id: number) => {
+  return favouriteStore.favourites.find(car => car.id === id) !== undefined;
+};
+
+const CarItem: FunctionComponent<ICarItem> = ({ car }: ICarItem) => {
   const { img_src, model, model_year, color, price, availability, id } = car;
 
-  const dispatch = useAppDispatch();
-
-  const isFavourite = useAppSelector(checkIsCarFavourite(id));
+  const isCarFavourite = checkIsCarFavourite(id);
 
   const toggleCar = () => {
-    isFavourite ? dispatch(removeCar(id)) : dispatch(addCar({ ...car }));
+    isCarFavourite
+      ? favouriteStore.removeCar(id)
+      : favouriteStore.addCar({ ...car });
   };
 
   return (
@@ -62,7 +63,7 @@ const CarItem: FunctionComponent<CarItem> = ({ car }: CarItem) => {
           {availability && (
             <StyledHeartButton onClick={toggleCar}>
               <img
-                src={isFavourite ? DarkHeart : EmptyHeart}
+                src={isCarFavourite ? DarkHeart : EmptyHeart}
                 alt="Heart Icon"
               />
             </StyledHeartButton>
@@ -74,4 +75,4 @@ const CarItem: FunctionComponent<CarItem> = ({ car }: CarItem) => {
   );
 };
 
-export default CarItem;
+export default observer(CarItem);

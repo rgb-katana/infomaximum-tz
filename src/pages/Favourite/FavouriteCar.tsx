@@ -1,8 +1,6 @@
-import { useAppDispatch } from '../../hooks/reduxHooks';
-import CarItem from '../Cars/CarItem';
+import CarItem, { ICarItem } from '../Cars/CarItem';
 import { STATIC_DOMAIN } from '../../shared/variables';
 import DefaultDelete from '../../assets/defaultdelete.svg?react';
-import { removeCar } from './favouriteSlice';
 import formatPrice from '../../utils/formatPrice';
 import { FunctionComponent } from 'react';
 import {
@@ -19,10 +17,9 @@ import {
   StyledPrice,
   StyledYear,
 } from './FavouriteCar.styles';
+import { favouriteStore } from './favouriteStore';
 
-const FavouriteCar: FunctionComponent<CarItem> = ({ car }: CarItem) => {
-  const dispatch = useAppDispatch();
-
+const FavouriteCar: FunctionComponent<ICarItem> = ({ car }: ICarItem) => {
   return (
     <StyledListElement>
       <ImagePart>
@@ -44,7 +41,7 @@ const FavouriteCar: FunctionComponent<CarItem> = ({ car }: CarItem) => {
           <StyledDeleteButton>
             <DefaultDelete
               onClick={() => {
-                dispatch(removeCar(car.id));
+                favouriteStore.removeCar(car.id);
               }}
             />
           </StyledDeleteButton>

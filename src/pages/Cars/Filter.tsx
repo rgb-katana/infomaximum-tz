@@ -1,13 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import Sort from '../../assets/sort.svg?react';
 import styled from 'styled-components';
-import { FilterValue, setNewFilter } from './carsSlice';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { FilterValue, carsStore } from './carsStore';
 
 interface FilterProps {
   value: string;
   options: { value: string; title: string }[];
-  onChange: React.Dispatch<React.SetStateAction<FilterValue>>;
 }
 
 const FilterContainer = styled.div`
@@ -30,13 +28,9 @@ const StyledSelect = styled.select`
 const Filter: FunctionComponent<FilterProps> = ({
   options,
   value,
-  onChange,
 }: FilterProps) => {
-  const dispatch = useAppDispatch();
-
   const onSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange(e.target.value as FilterValue);
-    dispatch(setNewFilter(e.target.value as FilterValue));
+    carsStore.setFilter(e.target.value as FilterValue);
   };
 
   return (

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { useAppSelector } from '../../hooks/reduxHooks';
 import FavouriteCar from './FavouriteCar';
 import plural from '../../utils/plural';
 import { FunctionComponent } from 'react';
+import { observer } from 'mobx-react';
+import { favouriteStore } from './favouriteStore';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -34,10 +35,8 @@ const FavouriteList = styled.ul`
   flex-direction: column;
 `;
 
-const Favourite: FunctionComponent = () => {
-  const favourites = useAppSelector(state => state.favourites.favourites);
-
-  const favCount: number = favourites.length;
+const Favourite: FunctionComponent = observer(() => {
+  const favCount: number = favouriteStore.favouritesCount;
 
   return (
     <Container>
@@ -47,12 +46,12 @@ const Favourite: FunctionComponent = () => {
       </StyledHeading>
       <StyledDivider />
       <FavouriteList>
-        {favourites.map(car => (
+        {favouriteStore.favourites.map(car => (
           <FavouriteCar car={car} key={car.id} />
         ))}
       </FavouriteList>
     </Container>
   );
-};
+});
 
 export default Favourite;

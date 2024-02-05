@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import CarItem from './CarItem';
 import Search from './Search';
 import Filter from './Filter';
-import { useAppSelector } from '../../hooks/reduxHooks';
 import { sortCars } from '../../utils/sortCars';
 import { sortOptions } from '../../shared/sortOptions';
 import Spinner from '../../ui/Spinner/Spinner';
+import { carsStore } from './carsStore';
+import { observer } from 'mobx-react';
 
 const Container = styled.div`
   padding: 0 20px;
@@ -32,16 +33,13 @@ const StyledInstruments = styled.div`
   margin-bottom: 35px;
 `;
 
-const Cars: FunctionComponent = () => {
+const Cars: FunctionComponent = observer(() => {
   const [cars, setCars] = useState<Query['cars']>([]);
 
   const options = sortOptions;
 
-  const searchFromRedux = useAppSelector(state => state.cars.search);
-  const filterFromRedux = useAppSelector(state => state.cars.filter);
-
-  const [search, setSearch] = useState(searchFromRedux);
-  const [filter, setFilter] = useState(filterFromRedux);
+  const search = carsStore.search;
+  const filter = carsStore.filter;
 
   const { error, loading, data } = useQuery(LOAD_CARS, {
     variables: { search: search ? search.toLowerCase() : '' },
@@ -56,8 +54,8 @@ const Cars: FunctionComponent = () => {
   return (
     <Container>
       <StyledInstruments>
-        <Filter onChange={setFilter} value={filter} options={options} />
-        <Search setSearch={setSearch} />
+        <Filter value={filter} options={options} />
+        <Search />
       </StyledInstruments>
       <StyledCarList>
         {!cars.length && <Spinner />}
@@ -67,6 +65,6 @@ const Cars: FunctionComponent = () => {
       </StyledCarList>
     </Container>
   );
-};
+});
 
 export default Cars;

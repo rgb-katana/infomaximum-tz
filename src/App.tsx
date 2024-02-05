@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import Cars from './pages/Cars/Cars';
 import GlobalStyles from './styles/global.styles';
-import { Provider } from 'react-redux';
 
 import {
   ApolloClient,
@@ -13,8 +12,8 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './ui/AppLayout';
+import { observer } from 'mobx-react';
 import Favourite from './pages/Favourite/Favourite';
-import { store } from './store';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -34,9 +33,9 @@ const client = new ApolloClient({
   link,
 });
 
-const App: FC = () => {
+const App: FC = observer(() => {
   return (
-    <Provider store={store}>
+    <>
       <GlobalStyles />
       <ApolloProvider client={client}>
         <BrowserRouter>
@@ -48,8 +47,8 @@ const App: FC = () => {
           </Routes>
         </BrowserRouter>
       </ApolloProvider>
-    </Provider>
+    </>
   );
-};
+});
 
 export default App;
